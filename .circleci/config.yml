@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  test:
+    docker:
+    - image: circleci/php:7.2-stretch
+    steps:
+    - checkout
+    - run: composer validate
+    - run: composer install
+    - run: vendor/bin/phpcs --standard=NeutronStandard --exclude=NeutronStandard.Functions.TypeHint src/
+    - run: vendor/bin/phpstan analyze
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - test:
+        filters:
+          branches:
+            only:
+            - master
