@@ -1,4 +1,4 @@
-#
+# Toolkit for WordPress
 
 This library is recommended for use in agency-type projects
 where have full control over the development and installation environment.

@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Toolkit4WP;
 
 use LogicException;
+use DomainException;
+
+use function trailingslashit;
 
 /**
  * Provide information on core paths and URLs.
@@ -37,32 +40,78 @@ class SiteInfo
         $this->info = [
             // Core
             'site_path'     => ABSPATH,
-            'site_url'      => trailingslashit(site_url()),
-            'home_path'     => get_home_path(),
-            'home_url'      => trailingslashit(get_home_url()),
-            'includes_path' => trailingslashit(ABSPATH . WPINC),
+            'site_url'      => site_url(),
+            'home_path'     => $this->get_home_path(),
+            'home_url'      => get_home_url(),
+            'includes_path' => ABSPATH . WPINC,
             'includes_url'  => includes_url(),
 
             // Content
-            'content_path' => trailingslashit(WP_CONTENT_DIR),
-            'content_url'  => trailingslashit(content_url()),
-            'uploads_path' => trailingslashit($uploadPathAndUrl['basedir']),
-            'uploads_url'  => trailingslashit($uploadPathAndUrl['baseurl']),
+            'content_path' => WP_CONTENT_DIR,
+            'content_url'  => content_url(),
+            'uploads_path' => $uploadPathAndUrl['basedir'],
+            'uploads_url'  => $uploadPathAndUrl['baseurl'],
 
             // Plugins
-            'plugins_path'    => trailingslashit(WP_PLUGIN_DIR),
-            'plugins_url'     => trailingslashit(plugins_url()),
-            'mu_plugins_path' => trailingslashit(WPMU_PLUGIN_DIR),
-            'mu_plugins_url'  => trailingslashit(WPMU_PLUGIN_URL),
+            'plugins_path'    => WP_PLUGIN_DIR,
+            'plugins_url'     => plugins_url(),
+            'mu_plugins_path' => WPMU_PLUGIN_DIR,
+            'mu_plugins_url'  => WPMU_PLUGIN_URL,
 
             // Themes
-            'themes_root_path'  => trailingslashit(get_theme_root()),
-            'themes_root_url'   => trailingslashit(get_theme_root_uri()),
-            'parent_theme_path' => trailingslashit(get_template_directory()),
-            'parent_theme_url'  => trailingslashit(get_template_directory_uri()),
-            'child_theme_path'  => trailingslashit(get_stylesheet_directory()),
-            'child_theme_url'   => trailingslashit(get_stylesheet_directory_uri()),
+            'themes_root_path'  => get_theme_root(),
+            'themes_root_url'   => get_theme_root_uri(),
+            'parent_theme_path' => get_template_directory(),
+            'parent_theme_url'  => get_template_directory_uri(),
+            'child_theme_path'  => get_stylesheet_directory(),
+            'child_theme_url'   => get_stylesheet_directory_uri(),
         ];
+    }
+
+    /**
+     * Public API.
+     */
+    public function getPath(string $name): string
+    {
+        return $this->getInfo($name, '_path');
+    }
+
+    /**
+     * Public API.
+     */
+    public function getUrl(string $name): string
+    {
+        return $this->getInfo($name, '_url');
+    }
+
+    /**
+     * Public API.
+     */
+    public function getUrlBasename(string $name): string
+    {
+        return \basename($this->getUrl($name));
+    }
+
+    /**
+     * Public API.
+     */
+    public function usingChildTheme(): bool
+    {
+        $this->setInfo();
+
+        return (trailingslashit($this->info['parent_theme_path']) !== trailingslashit($this->info['child_theme_path']));
+    }
+
+    /**
+     * Public API.
+     */
+    public function isUploadsWritable(): bool
+    {
+        $this->setInfo();
+
+        $uploadsDir = trailingslashit($this->info['uploads_path']);
+
+        return \file_exists($uploadsDir) && \is_writeable($uploadsDir);
     }
 
     protected function setInfo(): void
@@ -70,69 +119,36 @@ class SiteInfo
         if ($this->info !== []) {
             return;
         }
+
         if (! \did_action('init')) {
-            throw new LogicException('SiteInfo must be used in "init" action and later.');
+            throw new LogicException('SiteInfo must be used in "init" action or later.');
         }
 
         $this->init();
     }
 
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function getPath(string $name)
+    protected function getInfo(string $name, string $suffix): string
     {
         $this->setInfo();
 
-        $key = $name . '_path';
+        $key = $name . $suffix;
         if (! \array_key_exists($key, $this->info)) {
-            return null;
+            throw new DomainException('Unknown SiteInfo key: ' . $key);
         }
-        return $this->info[$key];
+        return trailingslashit($this->info[$key]);
     }
 
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function getUrl(string $name)
+    protected function get_home_path(): string
     {
-        $this->setInfo();
-
-        $key = $name . '_url';
-        if (! \array_key_exists($key, $this->info)) {
-            return null;
+        $homeUrl = \set_url_scheme(\get_option('home'), 'http');
+        $siteUrl = \set_url_scheme(\get_option('siteurl'), 'http');
+        if (! empty($homeUrl) && \strcasecmp($homeUrl, $siteUrl) !== 0) {
+            $pos = \strripos(\ABSPATH, trailingslashit(\str_ireplace($homeUrl, '', $siteUrl)));
+            if ($pos !== false) {
+                return \substr(\ABSPATH, 0, $pos);
+            }
         }
-        return $this->info[$key];
-    }
 
-    /**
-     * @param string $name
-     * @return string|null
-     */
-    public function getUrlBasename(string $name)
-    {
-        $url = $this->getUrl($name);
-        if (null === $url) {
-            return null;
-        }
-        return \basename($url);
-    }
-
-    public function usingChildTheme(): bool
-    {
-        $this->setInfo();
-
-        return ($this->info['parent_theme_path'] !== $this->info['child_theme_path']);
-    }
-
-    public function isUploadsWritable(): bool
-    {
-        $this->setInfo();
-
-        $uploadsDir = $this->info['uploads_path'];
-
-        return \file_exists($uploadsDir) && \is_writeable($uploadsDir);
+        return \ABSPATH;
     }
 }
