@@ -58,6 +58,11 @@ class Db
     {
         global $wpdb;
 
-        return \call_user_func_array([$wpdb, $name], $arguments);
+        $callback = [$wpdb, $name];
+        if (! \is_callable($callback)) {
+            throw new \InvalidArgumentException('Unknown wpdb method: ' . $name);
+        }
+
+        return \call_user_func_array($callback, $arguments);
     }
 }

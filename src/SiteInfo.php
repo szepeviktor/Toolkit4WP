@@ -36,35 +36,35 @@ class SiteInfo
      */
     protected function init(): void
     {
-        $uploadPathAndUrl = wp_upload_dir();
+        $uploadPathAndUrl = \wp_upload_dir();
         $this->info = [
             // Core
-            'site_path'     => ABSPATH,
-            'site_url'      => site_url(),
-            'home_path'     => $this->get_home_path(),
-            'home_url'      => get_home_url(),
-            'includes_path' => ABSPATH . WPINC,
-            'includes_url'  => includes_url(),
+            'site_path'     => \ABSPATH,
+            'site_url'      => \site_url(),
+            'home_path'     => $this->getHomePath(),
+            'home_url'      => \get_home_url(),
+            'includes_path' => \ABSPATH . \WPINC,
+            'includes_url'  => \includes_url(),
 
             // Content
-            'content_path' => WP_CONTENT_DIR,
-            'content_url'  => content_url(),
+            'content_path' => \WP_CONTENT_DIR,
+            'content_url'  => \content_url(),
             'uploads_path' => $uploadPathAndUrl['basedir'],
             'uploads_url'  => $uploadPathAndUrl['baseurl'],
 
             // Plugins
-            'plugins_path'    => WP_PLUGIN_DIR,
-            'plugins_url'     => plugins_url(),
-            'mu_plugins_path' => WPMU_PLUGIN_DIR,
-            'mu_plugins_url'  => WPMU_PLUGIN_URL,
+            'plugins_path'    => \WP_PLUGIN_DIR,
+            'plugins_url'     => \plugins_url(),
+            'mu_plugins_path' => \WPMU_PLUGIN_DIR,
+            'mu_plugins_url'  => \WPMU_PLUGIN_URL,
 
             // Themes
-            'themes_root_path'  => get_theme_root(),
-            'themes_root_url'   => get_theme_root_uri(),
-            'parent_theme_path' => get_template_directory(),
-            'parent_theme_url'  => get_template_directory_uri(),
-            'child_theme_path'  => get_stylesheet_directory(),
-            'child_theme_url'   => get_stylesheet_directory_uri(),
+            'themes_root_path'  => \get_theme_root(),
+            'themes_root_url'   => \get_theme_root_uri(),
+            'parent_theme_path' => \get_template_directory(),
+            'parent_theme_url'  => \get_template_directory_uri(),
+            'child_theme_path'  => \get_stylesheet_directory(),
+            'child_theme_url'   => \get_stylesheet_directory_uri(),
         ];
     }
 
@@ -138,7 +138,7 @@ class SiteInfo
         return trailingslashit($this->info[$key]);
     }
 
-    protected function get_home_path(): string
+    protected function getHomePath(): string
     {
         $homeUrl = \set_url_scheme(\get_option('home'), 'http');
         $siteUrl = \set_url_scheme(\get_option('siteurl'), 'http');
