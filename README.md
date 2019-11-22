@@ -7,3 +7,4 @@ where you have full control over the development and installation environment.
 
 - `szepeviktor/acf-get` Strongly typed Advanced Custom Fields get_field function variants.
 - `szepeviktor/persistent-admin-notices` Persistent admin notices for WordPress.
+- `widoz/wp-hooks` Set filters and actions that will be applied only once.
