@@ -5,10 +5,9 @@ jobs:
     - image: circleci/php:7.2-stretch
     steps:
     - checkout
-    - run: composer validate
-    - run: composer install
-    - run: vendor/bin/phpcs --standard=NeutronStandard --exclude=NeutronStandard.Functions.TypeHint src/
-    - run: vendor/bin/phpstan analyze
+    - run: composer validate --no-interaction --strict
+    - run: composer install --no-interaction
+    - run: composer test --no-interaction
 workflows:
   version: 2
   workflow:
