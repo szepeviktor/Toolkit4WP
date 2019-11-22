@@ -27,7 +27,7 @@
         }
     },
     "scripts": {
-        "style": "phpcs -p --standard=PSR12 src/",
+        "style": "phpcs -p src/",
         "analyze": "phpstan analyze",
         "test": [
             "@style",
