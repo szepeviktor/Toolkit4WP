@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace Toolkit4WP;
 
+// phpcs:disable NeutronStandard.MagicMethods.DisallowMagicGet.MagicGet,NeutronStandard.MagicMethods.DisallowMagicSet.MagicSet,NeutronStandard.MagicMethods.RiskyMagicMethod.RiskyMagicMethod
+
 /**
  * Connect to global $wpdb instance from OOP code.
  *
@@ -42,7 +44,7 @@ class Db
      * @param mixed $value
      * @return void
      */
-    public function __set($name, $value)
+    public function __set($name, $value) // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
     {
     }
 
@@ -63,6 +65,7 @@ class Db
             throw new \InvalidArgumentException('Unknown wpdb method: ' . $name);
         }
 
+        // phpcs:ignore NeutronStandard.Functions.DisallowCallUserFunc.CallUserFunc
         return \call_user_func_array($callback, $arguments);
     }
 }

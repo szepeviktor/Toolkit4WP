@@ -14,6 +14,7 @@ namespace Toolkit4WP;
 
 use LogicException;
 use DomainException;
+use WP_Filesystem_Base;
 
 use function trailingslashit;
 
@@ -37,6 +38,7 @@ class SiteInfo
     protected function init(): void
     {
         $uploadPathAndUrl = \wp_upload_dir();
+        // phpcs:disable NeutronStandard.AssignAlign.DisallowAssignAlign.Aligned
         $this->info = [
             // Core
             'site_path'     => \ABSPATH,
@@ -66,6 +68,7 @@ class SiteInfo
             'child_theme_path'  => \get_stylesheet_directory(),
             'child_theme_url'   => \get_stylesheet_directory_uri(),
         ];
+        // phpcs:enable
     }
 
     /**
@@ -107,11 +110,16 @@ class SiteInfo
      */
     public function isUploadsWritable(): bool
     {
+        global $wp_filesystem;
+        if (! $wp_filesystem instanceof WP_Filesystem_Base) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+
         $this->setInfo();
 
         $uploadsDir = trailingslashit($this->info['uploads_path']);
 
-        return \file_exists($uploadsDir) && \is_writeable($uploadsDir);
+        return $wp_filesystem->exists($uploadsDir) && $wp_filesystem->is_writable($uploadsDir);
     }
 
     protected function setInfo(): void

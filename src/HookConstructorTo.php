@@ -38,6 +38,7 @@ class HookConstructorTo
      *     @type int $pritority
      * ]
      */
+    // phpcs:ignore NeutronStandard.MagicMethods.RiskyMagicMethod.RiskyMagicMethod
     public static function __callStatic(string $actionTag, array $arguments): void
     {
         if ($arguments === []) {
@@ -57,6 +58,7 @@ class HookConstructorTo
             function () use ($class) {
                 // Pass hook parameters to constructor.
                 $args = func_get_args();
+                // phpcs:ignore NeutronStandard.Functions.VariableFunctions.VariableFunction
                 new $class(...$args);
             },
             $arguments[1] ?? self::DEFAULT_PRIORITY,

@@ -14,7 +14,6 @@ namespace Toolkit4WP;
 
 use ReflectionClass;
 use ArgumentCountError;
-use ErrorException;
 
 use function add_filter;
 
@@ -39,6 +38,7 @@ class HookInitTo
      * ]
      * @throws \ReflectionException
      */
+    // phpcs:ignore NeutronStandard.MagicMethods.RiskyMagicMethod.RiskyMagicMethod
     public static function __callStatic(string $actionTag, array $arguments): void
     {
         if ($arguments === []) {
@@ -53,6 +53,7 @@ class HookInitTo
         add_filter(
             $actionTag,
             function () use ($class) {
+                // phpcs:ignore NeutronStandard.Functions.VariableFunctions.VariableFunction
                 $instance = new $class();
                 // Pass hook parameters to init()
                 $args = func_get_args();
