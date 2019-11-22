@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ultra simple hooking for a constructor.
+ * Ultra simple hooking for init() method.
  *
  * @package Toolkit4WP
  * @author  Viktor Szépe <viktor@szepe.net>
@@ -19,13 +19,13 @@ use ErrorException;
 use function add_filter;
 
 /**
- * Hook a class constructor on to a specific action.
+ * Hook init() method on to a specific action.
  *
  * Example call with priority zero.
  *
- *     HookConstructorTo::init(MyClass::class, 0);
+ *     HookInitTo::plugins_loaded(MyClass::class, 0);
  */
-class HookConstructorTo
+class HookInitTo
 {
     protected const DEFAULT_PRIORITY = 10;
 
@@ -37,6 +37,7 @@ class HookConstructorTo
      *     @type string $class
      *     @type int $pritority
      * ]
+     * @throws \ReflectionException
      */
     public static function __callStatic(string $actionTag, array $arguments): void
     {
@@ -46,21 +47,19 @@ class HookConstructorTo
 
         $class = $arguments[0];
 
-        $constructor = (new ReflectionClass($class))->getConstructor();
-        if ($constructor === null) {
-            throw new ErrorException('The class must have a constructor defined.');
-        }
+        $initMethod = (new ReflectionClass($class))->getMethod('init');
 
         // Hook the constructor.
         add_filter(
             $actionTag,
             function () use ($class) {
-                // Pass hook parameters to constructor.
+                $instance = new $class();
+                // Pass hook parameters to init()
                 $args = func_get_args();
-                new $class(...$args);
+                $instance->init(...$args);
             },
             $arguments[1] ?? self::DEFAULT_PRIORITY,
-            $constructor->getNumberOfParameters()
+            $initMethod->getNumberOfParameters()
         );
     }
 }
