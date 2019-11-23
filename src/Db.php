@@ -7,6 +7,7 @@
  *
  * @package Toolkit4WP
  * @author  Viktor Szépe <viktor@szepe.net>
+ * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/szepeviktor/toolkit4wp
  */
 
