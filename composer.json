@@ -11,7 +11,7 @@
         "php": ">=7.1"
     },
     "require-dev": {
-        "automattic/phpcs-neutron-ruleset": "^3.2.0",
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.1.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "phpstan/phpstan-shim": "^0.11.19",
         "szepeviktor/phpstan-wordpress": "^0.3.0"
@@ -27,7 +27,7 @@
         }
     },
     "scripts": {
-        "style": "phpcs -p src/",
+        "style": "phpcs -p --standard=PSR12NeutronRuleset src/",
         "analyze": "phpstan analyze",
         "test": [
             "@style",
