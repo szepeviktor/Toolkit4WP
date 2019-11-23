@@ -5,6 +5,7 @@
  *
  * @package Toolkit4WP
  * @author  Viktor Szépe <viktor@szepe.net>
+ * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/szepeviktor/toolkit4wp
  */
 
@@ -110,6 +111,7 @@ class SiteInfo
      */
     public function isUploadsWritable(): bool
     {
+        // phpcs:disable Squiz.NamingConventions.ValidVariableName
         global $wp_filesystem;
         if (! $wp_filesystem instanceof WP_Filesystem_Base) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -120,6 +122,7 @@ class SiteInfo
         $uploadsDir = trailingslashit($this->info['uploads_path']);
 
         return $wp_filesystem->exists($uploadsDir) && $wp_filesystem->is_writable($uploadsDir);
+        // phpcs:enable
     }
 
     protected function setInfo(): void
