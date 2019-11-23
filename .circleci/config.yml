@@ -7,7 +7,7 @@ jobs:
     - checkout
     - run: composer validate --no-interaction --strict
     - run: composer install --no-interaction
-    - run: vendor/bin/phpcs -p src/
+    - run: vendor/bin/phpcs -p --standard=PSR12NeutronRuleset src/
     - run: php -d memory_limit=1G vendor/bin/phpstan analyze
 workflows:
   version: 2
