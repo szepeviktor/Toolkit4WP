@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ultra simple hooking for a constructor.
+ * Ultra simple hooking for class constructor.
  *
  * @package Toolkit4WP
  * @author  Viktor Szépe <viktor@szepe.net>
@@ -20,7 +20,7 @@ use ErrorException;
 use function add_filter;
 
 /**
- * Hook a class constructor on to a specific action.
+ * Hook class constructor on to a specific action.
  *
  * Example call with priority zero.
  *

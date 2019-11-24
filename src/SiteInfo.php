@@ -146,6 +146,7 @@ class SiteInfo
         if (! \array_key_exists($key, $this->info)) {
             throw new DomainException('Unknown SiteInfo key: ' . $key);
         }
+
         return trailingslashit($this->info[$key]);
     }
 
