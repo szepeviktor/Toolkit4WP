@@ -5,7 +5,6 @@
  *
  * Usage: $db = new \Toolkit4WP\Db(); $db->prepare('...');
  *
- * @package Toolkit4WP
  * @author  Viktor Szépe <viktor@szepe.net>
  * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/szepeviktor/toolkit4wp
@@ -31,7 +30,7 @@ class Db
      * @param string $name
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         global $wpdb;
 
@@ -44,20 +43,23 @@ class Db
      * @param string $name
      * @param mixed $value
      * @return void
+     *
+     * phpcs:disable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    public function __set($name, $value) // phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+    public function __set(string $name, $value): void
     {
     }
+    // phpcs:enable SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
 
     /**
      * Execute a method.
      *
      * @see https://www.php.net/manual/en/language.oop5.overloading.php#object.call
      * @param string $name
-     * @param array $arguments
+     * @param array<mixed> $arguments
      * @return mixed
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         global $wpdb;
 

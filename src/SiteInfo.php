@@ -3,7 +3,6 @@
 /**
  * Helper functions for site information.
  *
- * @package Toolkit4WP
  * @author  Viktor Szépe <viktor@szepe.net>
  * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/szepeviktor/toolkit4wp
@@ -13,8 +12,6 @@ declare(strict_types=1);
 
 namespace Toolkit4WP;
 
-use LogicException;
-use DomainException;
 use WP_Filesystem_Base;
 
 use function trailingslashit;
@@ -27,7 +24,7 @@ class SiteInfo
     /**
      * Site info.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $info = [];
 
@@ -103,7 +100,7 @@ class SiteInfo
     {
         $this->setInfo();
 
-        return (trailingslashit($this->info['parent_theme_path']) !== trailingslashit($this->info['child_theme_path']));
+        return trailingslashit($this->info['parent_theme_path']) !== trailingslashit($this->info['child_theme_path']);
     }
 
     /**
@@ -132,7 +129,7 @@ class SiteInfo
         }
 
         if (! \did_action('init')) {
-            throw new LogicException('SiteInfo must be used in "init" action or later.');
+            throw new \LogicException('SiteInfo must be used in "init" action or later.');
         }
 
         $this->init();
@@ -144,7 +141,7 @@ class SiteInfo
 
         $key = $name . $suffix;
         if (! \array_key_exists($key, $this->info)) {
-            throw new DomainException('Unknown SiteInfo key: ' . $key);
+            throw new \DomainException('Unknown SiteInfo key: ' . $key);
         }
 
         return trailingslashit($this->info[$key]);
@@ -154,7 +151,7 @@ class SiteInfo
     {
         $homeUrl = \set_url_scheme(\get_option('home'), 'http');
         $siteUrl = \set_url_scheme(\get_option('siteurl'), 'http');
-        if (! empty($homeUrl) && \strcasecmp($homeUrl, $siteUrl) !== 0) {
+        if ($homeUrl !== '' && \strcasecmp($homeUrl, $siteUrl) !== 0) {
             $pos = \strripos(\ABSPATH, trailingslashit(\str_ireplace($homeUrl, '', $siteUrl)));
             if ($pos !== false) {
                 return \substr(\ABSPATH, 0, $pos);
