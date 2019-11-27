@@ -11,3 +11,5 @@ where you have full control over the development and installation environment.
   Persistent admin notices for WordPress.
 - [szepeviktor/acf-get](https://github.com/szepeviktor/acf-get)
   Strongly typed Advanced Custom Fields get_field function variants.
+- [sandhillsdevelopment/claws](https://github.com/sandhillsdevelopment/claws)
+  Build standardized SQL clauses.

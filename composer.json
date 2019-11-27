@@ -11,21 +11,23 @@
         "php": ">=7.1"
     },
     "require-dev": {
-        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.3.0",
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.3.2",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
         "phpstan/phpstan-shim": "^0.11.19",
         "szepeviktor/phpstan-wordpress": "^0.3.0"
     },
     "suggest": {
     },
-    "minimum-stability": "dev",
     "config": {
         "optimize-autoloader": true
     },
     "autoload": {
         "psr-4": {
             "Toolkit4WP\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "scripts": {
         "style": "phpcs -p --standard=PSR12NeutronRuleset src/",
