@@ -30,9 +30,11 @@
         ]
     },
     "scripts": {
+        "lint": "find src/ -type f -name '*.php' -print0|xargs -0 -L1 -P4 -- php -l",
         "style": "phpcs -p --standard=PSR12NeutronRuleset src/",
         "analyze": "phpstan analyze",
         "test": [
+            "@lint",
             "@style",
             "@analyze"
         ]
