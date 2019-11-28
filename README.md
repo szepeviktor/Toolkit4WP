@@ -13,3 +13,5 @@ where you have full control over the development and installation environment.
   Strongly typed Advanced Custom Fields get_field function variants.
 - [sandhillsdevelopment/claws](https://github.com/sandhillsdevelopment/claws)
   Build standardized SQL clauses.
+- [decodelabs/tagged](https://github.com/decodelabs/tagged)
+  PHP markup generation without the fuss
