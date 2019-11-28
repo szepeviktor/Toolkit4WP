@@ -61,7 +61,7 @@ class HookInitTo
                 $args = func_get_args();
                 $instance->init(...$args);
             },
-            intval($arguments[1]) ?? self::DEFAULT_PRIORITY,
+            \intval($arguments[1]) ?? self::DEFAULT_PRIORITY,
             $initMethod->getNumberOfParameters()
         );
     }

@@ -21,7 +21,7 @@ use function add_filter;
  *
  * Example call with priority zero.
  *
- *     HookConstructorTo::init(MyClass::class, 0);
+ *     HookConstructorTo::{'acf/init'}(MyClass::class, 0);
  */
 class HookConstructorTo
 {
@@ -58,7 +58,7 @@ class HookConstructorTo
                 // phpcs:ignore NeutronStandard.Functions.VariableFunctions.VariableFunction
                 new $class(...$args);
             },
-            intval($arguments[1]) ?? self::DEFAULT_PRIORITY,
+            \intval($arguments[1]) ?? self::DEFAULT_PRIORITY,
             $constructor->getNumberOfParameters()
         );
     }
