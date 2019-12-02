@@ -88,3 +88,39 @@ function tagList(
 
     return tag($name, $attrs, \implode('', $content));
 }
+
+/**
+ * Create a DIV element with classes.
+ *
+ * @param string $classes
+ * @param string $htmlContent
+ * @return string
+ */
+function tagDivClass(string $classes, string $htmlContent = ''): string
+{
+    return tag('div', ['class' => $classes], $htmlContent);
+}
+
+/**
+ * Create a H3 element with classes.
+ *
+ * @param string $classes
+ * @param string $htmlContent
+ * @return string
+ */
+function tagH3Class(string $classes, string $htmlContent = ''): string
+{
+    return tag('h3', ['class' => $classes], $htmlContent);
+}
+
+/**
+ * Create an HTML element from tag name and array of attributes.
+ *
+ * @param array<string, mixed> $skeleton
+ * @param string $htmlContent
+ * @return string
+ */
+function tagFromSkeleton(array $skeleton, string $htmlContent = ''): string
+{
+    return tag($skeleton['tag'], $skeleton['attrs'], $htmlContent);
+}
