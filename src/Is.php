@@ -3,8 +3,6 @@
 /**
  * Helper functions to determine entry point.
  *
- * @see https://github.com/chesio/bc-security/blob/develop/classes/BlueChip/Security/Helpers/Is.php
- *
  * @author  Viktor Szépe <viktor@szepe.net>
  * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/szepeviktor/toolkit4wp
@@ -18,6 +16,8 @@ use WP_User;
 
 /**
  * Various request helpers.
+ *
+ * @see https://github.com/chesio/bc-security/blob/develop/classes/BlueChip/Security/Helpers/Is.php
  */
 class Is
 {
