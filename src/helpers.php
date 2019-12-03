@@ -102,7 +102,7 @@ function tagDivClass(string $classes, string $htmlContent = ''): string
 }
 
 /**
- * Create a H3 element with classes.
+ * Create an H3 element with classes.
  *
  * @param string $classes
  * @param string $htmlContent
