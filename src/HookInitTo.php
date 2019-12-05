@@ -31,8 +31,8 @@ class HookInitTo
      * Hook to the action in the method name.
      *
      * @param string $actionTag
-     * @param array<string|int> $arguments = [
-     *     @type string $class
+     * @param array<class-string|int> $arguments = [
+     *     @type class-string $class
      *     @type int $pritority
      * ]
      * @throws \ArgumentCountError
@@ -47,6 +47,8 @@ class HookInitTo
             throw new \ArgumentCountError('Class name must be supplied.');
         }
 
+        // phpcs:ignore SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion
+        /** @var class-string $class */
         $class = $arguments[0];
 
         $initMethod = (new ReflectionClass($class))->getMethod('init');

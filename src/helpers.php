@@ -21,7 +21,7 @@ use Traversable;
  *
  * @param string $name Tag name.
  * @param array<string, string|null> $attrs HTML attributes.
- * @param string|\Traversable $content Raw HTML content.
+ * @param string|\Traversable<int, string> $content Raw HTML content.
  * @return string
  * @throws \Exception
  */
