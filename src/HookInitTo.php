@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable NeutronStandard.MagicMethods.RiskyMagicMethod.RiskyMagicMethod
 
 /**
  * Ultra simple hooking for init() method.
@@ -37,12 +37,9 @@ class HookInitTo
      * ]
      * @throws \ArgumentCountError
      * @throws \ReflectionException
-     *
-     * phpcs:disable NeutronStandard.MagicMethods.RiskyMagicMethod.RiskyMagicMethod
      */
     public static function __callStatic(string $actionTag, array $arguments): void
     {
-        // phpcs:enable NeutronStandard.MagicMethods.RiskyMagicMethod.RiskyMagicMethod
         if ($arguments === []) {
             throw new \ArgumentCountError('Class name must be supplied.');
         }
@@ -63,7 +60,7 @@ class HookInitTo
                 $args = func_get_args();
                 $instance->init(...$args);
             },
-            \intval($arguments[1]) ?? self::DEFAULT_PRIORITY,
+            \intval($arguments[1] ?? self::DEFAULT_PRIORITY),
             $initMethod->getNumberOfParameters()
         );
     }

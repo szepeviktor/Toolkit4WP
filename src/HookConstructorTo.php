@@ -60,7 +60,7 @@ class HookConstructorTo
                 // phpcs:ignore NeutronStandard.Functions.VariableFunctions.VariableFunction
                 new $class(...$args);
             },
-            \intval($arguments[1]) ?? self::DEFAULT_PRIORITY,
+            \intval($arguments[1] ?? self::DEFAULT_PRIORITY),
             $constructor->getNumberOfParameters()
         );
     }
