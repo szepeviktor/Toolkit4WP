@@ -15,3 +15,5 @@ where you have full control over the development and installation environment.
   Build standardized SQL clauses.
 - [decodelabs/tagged](https://github.com/decodelabs/tagged)
   PHP markup generation without the fuss
+- [dantleech/invoke](https://github.com/dantleech/invoke)
+  Utility class to create new classes or invoke methods using named arguments.

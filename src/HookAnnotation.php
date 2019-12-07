@@ -30,34 +30,34 @@ trait HookAnnotation
             if ($method->isConstructor()) {
                 continue;
             }
-            $docComment = $this->parseDocComment((string) $method->getDocComment(), $defaultPriority);
-            if ($docComment === null) {
+            $hookDetails = $this->getMetadata((string) $method->getDocComment(), $defaultPriority);
+            if ($hookDetails === null) {
                 continue;
             }
 
             add_filter(
-                $docComment['hookName'],
+                $hookDetails['name'],
                 [$this, $method->name],
-                $docComment['priority'],
+                $hookDetails['priority'],
                 $method->getNumberOfParameters()
             );
         }
     }
 
     /**
-     * Parse docblock.
+     * Read hook tag from docblock.
      *
      * mindplay/annotations may be a better solution.
      *
      * Format: @hook hook_name 10
      *
-     * @return array<string, string|int>|null
+     * @return array<string, mixed>|null
      */
-    protected function parseDocComment(string $docComment, int $defaultPriority): ?array
+    protected function getMetadata(string $docComment, int $defaultPriority): ?array
     {
         $matches = [];
         if (
-            preg_match(
+            \preg_match(
                 '/^\s+\*\s+@hook\s+([\w\/-]+)(?:\s+(\d+))?\s*$/m',
                 $docComment,
                 $matches
@@ -66,6 +66,6 @@ trait HookAnnotation
             return null;
         }
 
-        return ['hookName' => $matches[1], 'priority' => \intval($matches[2] ?? $defaultPriority)];
+        return ['name' => $matches[1], 'priority' => \intval($matches[2] ?? $defaultPriority)];
     }
 }
