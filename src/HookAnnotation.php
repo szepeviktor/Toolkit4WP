@@ -22,35 +22,48 @@ use function add_filter;
  */
 trait HookAnnotation
 {
-    protected function hookMethods(): void
+    protected function hookMethods(int $defaultPriority = 10): void
     {
-        $defaultPriority = 10;
-
         $classReflection = new ReflectionClass(self::class);
         foreach ($classReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            // Do not hook constructor or use HookConstructorTo
+            // Do not hook constructor or use HookConstructorTo.
             if ($method->isConstructor()) {
                 continue;
             }
-
-            $matches = [];
-            // Parse docblock: /** @hook hook_name 10 */
-            if (
-                preg_match(
-                    '/^\s+\*\s+@hook\s+([a-z_\/-]+)(\s+(\d+))?\s*$/m',
-                    $method->getDocComment(),
-                    $matches
-                ) !== 1
-            ) {
+            $docComment = $this->parseDocComment($method->getDocComment(), $defaultPriority);
+            if ($docComment === null) {
                 continue;
             }
 
             add_filter(
-                $matches[1], // Hook name.
+                $docComment['hookName'],
                 [$this, $method->name],
-                $matches[3] ?? $defaultPriority,
+                $docComment['priority'],
                 $method->getNumberOfParameters()
             );
         }
+    }
+
+    /**
+     * Parse docblock.
+     *
+     * mindplay/annotations may be a better solution.
+     *
+     * Format: @hook hook_name 10
+     */
+    protected function parseDocComment(string $docComment, int $defaultPriority): ?array
+    {
+        $matches = [];
+        if (
+            preg_match(
+                '/^\s+\*\s+@hook\s+([a-z_\/-]+)(\s+(\d+))?\s*$/m',
+                $docComment,
+                $matches
+            ) !== 1
+        ) {
+            return null;
+        }
+
+        return ['hookName' => $matches[1], 'priority' => $matches[3] ?? $defaultPriority];
     }
 }
