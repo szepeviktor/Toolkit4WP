@@ -30,7 +30,7 @@ trait HookAnnotation
             if ($method->isConstructor()) {
                 continue;
             }
-            $docComment = $this->parseDocComment($method->getDocComment(), $defaultPriority);
+            $docComment = $this->parseDocComment((string) $method->getDocComment(), $defaultPriority);
             if ($docComment === null) {
                 continue;
             }
@@ -50,13 +50,15 @@ trait HookAnnotation
      * mindplay/annotations may be a better solution.
      *
      * Format: @hook hook_name 10
+     *
+     * @return array<string, string|int>|null
      */
     protected function parseDocComment(string $docComment, int $defaultPriority): ?array
     {
         $matches = [];
         if (
             preg_match(
-                '/^\s+\*\s+@hook\s+([a-z_\/-]+)(\s+(\d+))?\s*$/m',
+                '/^\s+\*\s+@hook\s+([\w\/-]+)(?:\s+(\d+))?\s*$/m',
                 $docComment,
                 $matches
             ) !== 1
@@ -64,6 +66,6 @@ trait HookAnnotation
             return null;
         }
 
-        return ['hookName' => $matches[1], 'priority' => $matches[3] ?? $defaultPriority];
+        return ['hookName' => $matches[1], 'priority' => \intval($matches[2] ?? $defaultPriority)];
     }
 }
