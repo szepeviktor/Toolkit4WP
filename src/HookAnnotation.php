@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable SlevomatCodingStandard.Namespaces.FullyQualifiedClassNameInAnnotation.NonFullyQualifiedClassName
 
 /**
  * Annotation based hooking for classes.
@@ -18,7 +18,7 @@ use ReflectionMethod;
 use function add_filter;
 
 /**
- * @see https://www.php.net/manual/en/class.reflectionclass.php
+ * @see https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wordpress/WordPress-hooks.md
  */
 trait HookAnnotation
 {
@@ -51,7 +51,7 @@ trait HookAnnotation
      *
      * Format: @hook hook_name 10
      *
-     * @return array<string, mixed>|null
+     * @return array{name: string, priority: int}|null
      */
     protected function getMetadata(string $docComment, int $defaultPriority): ?array
     {
