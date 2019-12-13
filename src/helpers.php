@@ -116,7 +116,7 @@ function tagH3Class(string $classes, string $htmlContent = ''): string
 /**
  * Create an HTML element from tag name and array of attributes.
  *
- * @param array<string, mixed> $skeleton
+ * @param array{tag: string, attrs: array<string, string|null>} $skeleton
  * @param string $htmlContent
  * @return string
  */
