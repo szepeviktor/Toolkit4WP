@@ -3,8 +3,6 @@
 /**
  * This is a gift for Phil.
  *
- * Usage: $db = new \Toolkit4WP\Db(); $db->prepare('...');
- *
  * @author  Viktor Szépe <viktor@szepe.net>
  * @license https://opensource.org/licenses/MIT MIT
  * @link    https://github.com/szepeviktor/toolkit4wp
@@ -18,6 +16,10 @@ namespace Toolkit4WP;
 
 /**
  * Connect to global $wpdb instance from OOP code.
+ *
+ * Usage example.
+ *
+ *     $db = new \Toolkit4WP\Db(); $db->prepare('...');
  *
  * @see https://www.php.net/manual/en/language.oop5.magic.php
  */

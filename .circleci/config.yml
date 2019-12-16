@@ -2,11 +2,12 @@ version: 2
 jobs:
   test:
     docker:
-    - image: circleci/php:7.2-stretch
+    - image: circleci/php:7.3-stretch
     steps:
     - checkout
     - run: composer validate --no-interaction --strict
     - run: composer install --no-interaction
+    - run: composer outdated --no-interaction --direct
     - run: composer lint
     - run: composer style
     - run: php -d memory_limit=1G vendor/bin/phpstan analyze

@@ -21,3 +21,5 @@ where you have full control over the development and installation environment.
   Utility class to create new classes or invoke methods using named arguments.
 - [lstrojny/functional-php](https://github.com/lstrojny/functional-php)
   Functional primitives for PHP
+- [phpoption/phpoption](https://github.com/schmittjoh/php-option)
+  Option Type for PHP
