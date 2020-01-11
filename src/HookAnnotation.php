@@ -30,7 +30,7 @@ trait HookAnnotation
             if ($method->isConstructor()) {
                 continue;
             }
-            $hookDetails = $this->getMetadata((string) $method->getDocComment(), $defaultPriority);
+            $hookDetails = $this->getMetadata((string)$method->getDocComment(), $defaultPriority);
             if ($hookDetails === null) {
                 continue;
             }
