@@ -23,3 +23,5 @@ where you have full control over the development and installation environment.
   Functional primitives for PHP
 - [phpoption/phpoption](https://github.com/schmittjoh/php-option)
   Option Type for PHP
+- [o/wp-context](https://github.com/j-arens/wp-context)
+  Utilities for determining the current context of a request.
