@@ -50,7 +50,7 @@ class HookInitTo
 
         $initMethod = (new ReflectionClass($class))->getMethod('init');
 
-        // Hook the constructor.
+        // Hook 'init' method.
         add_filter(
             $actionTag,
             static function () use ($class): void {

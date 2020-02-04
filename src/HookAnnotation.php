@@ -25,8 +25,9 @@ trait HookAnnotation
     protected function hookMethods(int $defaultPriority = 10): void
     {
         $classReflection = new ReflectionClass(self::class);
+        // Look for hook tag in all public methods.
         foreach ($classReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            // Do not hook constructor or use HookConstructorTo.
+            // Do not hook constructor, use HookConstructorTo.
             if ($method->isConstructor()) {
                 continue;
             }
