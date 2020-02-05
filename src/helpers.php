@@ -54,18 +54,15 @@ function tag(string $name = 'div', array $attrs = [], $content = ''): string
     }
 
     // Element.
-    $html = \sprintf('<%s%s>', $name, $attrString);
-    if (! $isVoid) {
-        $html .= \sprintf('%s</%s>', $content, $name);
+    if ($isVoid) {
+        return \sprintf('<%s%s>', $name, $attrString);
     }
 
-    return $html;
+    return \sprintf('<%s%s>%s</%s>', $name, $attrString, $content, $name);
 }
 
 /**
  * Create an HTML list.
- *
- * @see https://www.w3.org/TR/html/syntax.html#void-elements
  *
  * @param string $name Parent tag name.
  * @param array<string, string> $attrs HTML attributes of the parent.
