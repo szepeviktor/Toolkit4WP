@@ -5,11 +5,12 @@ parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
     paths:
-        - %currentWorkingDirectory%/src/
+        - src/
+        - tests/HookAnnotation.php
     autoload_files:
-        - %currentWorkingDirectory%/tests/bootstrap.php
+        - tests/bootstrap.php
     ignoreErrors:
-#        # PHPStan has problems with callables.
-#        -
-#            path: %currentWorkingDirectory%/src/HookAnnotation.php
-#            message: '#^Parameter \#2 \$function_to_add of function add_filter expects callable\(\): mixed, array\(\$this\(Toolkit4WP\\HookAnnotation\), mixed\) given\.$#'
+        # PHPStan has problems with callables.
+        -
+            path: src/HookAnnotation.php
+            message: '#^Parameter \#2 \$function_to_add of function add_filter expects callable\(\): mixed, array\(\$this\(Toolkit4WP\\Tests\\HookAnnotation\), mixed\) given\.$#'

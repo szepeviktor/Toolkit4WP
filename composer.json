@@ -12,8 +12,8 @@
     },
     "require-dev": {
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.4.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-        "szepeviktor/phpstan-wordpress": "^0.5.0"
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.0",
+        "szepeviktor/phpstan-wordpress": "^0.6.0"
     },
     "suggest": {
     },
@@ -27,6 +27,11 @@
         "files": [
             "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Toolkit4WP\\Tests\\": "tests/"
+        }
     },
     "scripts": {
         "lint": "find src/ -type f -name '*.php' -print0|xargs -0 -L1 -P4 -- php -l",

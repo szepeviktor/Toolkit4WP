@@ -9,8 +9,10 @@ where you have full control over the development and installation environment.
 
 ### Recommended packages
 
-- [widoz/wp-hooks](https://github.com/widoz/wp-hooks)
-  Set filters and actions that will be applied only once.
+- [iron-bound-designs/psr-14-wp](https://github.com/iron-bound-designs/psr-14-wp)
+  PSR-14 implementation for WordPress.
+- [inpsyde/wp-events](https://github.com/inpsyde/wp-events)
+  PSR-14 compliant wrapper.
 - [szepeviktor/persistent-admin-notices](https://github.com/szepeviktor/wordpress-persistent-admin-notices)
   Persistent admin notices for WordPress.
 - [szepeviktor/acf-get](https://github.com/szepeviktor/acf-get)
