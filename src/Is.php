@@ -85,6 +85,10 @@ class Is
             case 'admin':
                 // Includes admin-ajax :(
                 return \is_admin();
+            case 'login':
+                return isset($_SERVER['REQUEST_URI'])
+                    && \explode('?', $_SERVER['REQUEST_URI'])[0]
+                        === \wp_parse_url(\wp_login_url('', true), \PHP_URL_PATH);
             case 'async-upload':
                 return isset($_SERVER['SCRIPT_FILENAME'])
                     && \ABSPATH . 'wp-admin/async-upload.php' === $_SERVER['SCRIPT_FILENAME'];
