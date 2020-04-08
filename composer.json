@@ -38,6 +38,7 @@
         "style": "phpcs -p --parallel=4 --standard=PSR12NeutronRuleset src/",
         "analyze": "phpstan analyze",
         "test": [
+            "@composer validate --strict",
             "@lint",
             "@style",
             "@analyze"
