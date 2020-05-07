@@ -22,6 +22,17 @@ use WP_User;
 class Is
 {
     /**
+     * Whether we are in a live environment.
+     *
+     * @return bool
+     */
+    public static function live(): bool
+    {
+        // Consider both production and staging environment as live.
+        return \defined('WP_ENV') && \in_array(\WP_ENV, ['production', 'staging'], true);
+    }
+
+    /**
      * Whether given user is an administrator.
      *
      * @param \WP_User $user The given user.
