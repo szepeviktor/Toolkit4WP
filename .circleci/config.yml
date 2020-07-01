@@ -8,7 +8,7 @@ jobs:
     - run: composer validate --no-interaction --strict
     - run: composer install --no-interaction
     - run: composer outdated --no-interaction --direct
-    - run: composer lint
+    - run: composer syntax
     - run: composer style
     - run: php -d memory_limit=1G vendor/bin/phpstan analyze
 workflows:

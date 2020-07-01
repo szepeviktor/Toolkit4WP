@@ -85,13 +85,14 @@ class Is
      */
     public static function request(string $type): bool
     {
+        // phpcs:disable Squiz.PHP.CommentedOutCode.Found
         switch ($type) {
             case 'installing':
                 return \defined('WP_INSTALLING') && \WP_INSTALLING === true;
             case 'index':
                 return \defined('WP_USE_THEMES') && \WP_USE_THEMES === true;
             case 'frontend':
-                // Use !frontend for admin pages.
+                // Use !request('frontend') for admin pages.
                 return (! \is_admin() || \wp_doing_ajax() ) && ! \wp_doing_cron();
             case 'admin':
                 // Includes admin-ajax :(
@@ -103,25 +104,24 @@ class Is
             case 'async-upload':
                 return isset($_SERVER['SCRIPT_FILENAME'])
                     && \ABSPATH . 'wp-admin/async-upload.php' === $_SERVER['SCRIPT_FILENAME'];
-            // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
-            case 'preview': // in 'parse_query' action if(is_main_query())
+            case 'preview': // in 'parse_query' action if (is_main_query())
                 return \is_preview() || \is_customize_preview();
-            case 'autosave': // after 'heartbeat_received', 500 action
+            case 'autosave': // After 'heartbeat_received', 500 action
                 // Autosave post while editing and Heartbeat.
                 return \defined('DOING_AUTOSAVE') && \DOING_AUTOSAVE === true;
-            case 'rest': // after 'parse_request' action
+            case 'rest': // After 'parse_request' action
                 return \defined('REST_REQUEST') && \REST_REQUEST === true;
             case 'ajax':
                 return \wp_doing_ajax();
             case 'xmlrpc':
                 return \defined('XMLRPC_REQUEST') && \XMLRPC_REQUEST === true;
-            case 'trackback': // in 'parse_query'
+            case 'trackback': // In 'parse_query'
                 return \is_trackback();
-            case 'search': // in 'parse_query'
+            case 'search': // In 'parse_query'
                 return \is_search();
-            case 'feed': // in 'parse_query'
+            case 'feed': // In 'parse_query'
                 return \is_feed();
-            case 'robots': // in 'parse_query'
+            case 'robots': // In 'parse_query'
                 return \is_robots();
             case 'cron':
                 return \wp_doing_cron();

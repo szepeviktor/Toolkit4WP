@@ -13,7 +13,7 @@
     "require-dev": {
         "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.4.0",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.6.0",
-        "szepeviktor/phpstan-wordpress": "^0.6.0"
+        "szepeviktor/phpstan-wordpress": "^0.6.1"
     },
     "suggest": {
     },
@@ -34,14 +34,14 @@
         }
     },
     "scripts": {
-        "lint": "find src/ -type f -name '*.php' -print0|xargs -0 -L1 -P4 -- php -l",
+        "syntax": "find -L . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n 1 -P 4 -- php -l",
         "style": "phpcs -p --parallel=4 --standard=PSR12NeutronRuleset src/",
-        "analyze": "phpstan analyze",
+        "phpstan": "phpstan analyze",
         "test": [
             "@composer validate --strict",
-            "@lint",
+            "@syntax",
             "@style",
-            "@analyze"
+            "@phpstan"
         ]
     }
 }

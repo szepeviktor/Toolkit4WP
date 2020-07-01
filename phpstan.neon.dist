@@ -7,7 +7,7 @@ parameters:
     paths:
         - src/
         - tests/HookAnnotation.php
-    autoload_files:
+    bootstrapFiles:
         - tests/bootstrap.php
     ignoreErrors:
         # PHPStan has problems with callables.
