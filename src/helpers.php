@@ -135,6 +135,7 @@ function checkUTF8(string $string): bool
 
     $length = \strlen($string);
     for ($pos = 0; $pos < $length; $pos += 1) {
+        $sequenceSize = 1;
         $octet = \ord($string[$pos]);
         /*
         | Char. number range  | UTF-8 octet sequence                |
@@ -144,14 +145,11 @@ function checkUTF8(string $string): bool
         | 0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx          |
         | 0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx |
         */
-        // Only 1 octet.
-        if ($octet <= 0b01111111) {
-            continue;
-        }
-
-        $sequenceSize = 1;
         switch (true) {
-            // First octet is too high.
+            // Only 1 octet.
+            case $octet <= 0b01111111:
+                continue 2;
+            // Leading byte is too high: 0xF8-0xFF.
             case $octet > 0b11110111:
                 return false;
             case $octet > 0b11101111:
@@ -163,7 +161,7 @@ function checkUTF8(string $string): bool
             case $octet > 0b10111111:
                 $sequenceSize = 2;
                 break;
-            // First octet is too low: 0x80-0xBF.
+            // Leading byte is too low: 0x80-0xBF.
             default:
                 return false;
         }
@@ -175,11 +173,13 @@ function checkUTF8(string $string): bool
 
 // TODO https://en.wikipedia.org/wiki/UTF-8#Invalid_byte_sequences
 
+// TODO Add tests
+
         // Check further octets.
         while ($sequenceSize > 1) {
             $pos += 1;
             $octet = \ord($string[$pos]);
-            // Octet is outside: 0x80-0xBF.
+            // Octet is outside 0x80-0xBF.
             if ($octet < 0b10000000 || $octet > 0b10111111) {
                 return false;
             }
