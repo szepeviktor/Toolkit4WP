@@ -129,8 +129,10 @@ function tagFromSkeleton(array $skeleton, string $htmlContent = ''): string
  */
 function checkUTF8(string $string): bool
 {
+    // phpcs:ignore Squiz.PHP.CommentedOutCode.Found
     // https://www.php.net/manual/en/function.mb-check-encoding.php
     //return \mb_check_encoding($string, 'UTF-8');
+    // https://github.com/PCRE/pcre2/blob/master/src/pcre2_valid_utf.c#L99-L316
     //return \preg_match('//u', $string) === 1;
 
     $length = \strlen($string);
@@ -145,6 +147,7 @@ function checkUTF8(string $string): bool
         | 0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx          |
         | 0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx |
         */
+        // Test leading byte.
         switch (true) {
             // Only 1 octet.
             case $octet <= 0b01111111:
@@ -171,9 +174,11 @@ function checkUTF8(string $string): bool
             return false;
         }
 
-// TODO https://en.wikipedia.org/wiki/UTF-8#Invalid_byte_sequences
+        // TODO https://en.wikipedia.org/wiki/UTF-8#Invalid_byte_sequences
+        // See https://github.com/voku/portable-utf8/blob/b9cb9a51de8715db29a66c42d8f30b216957871f/src/voku/helper/UTF8.php#L14067-L14087
+        // https://hsivonen.fi/php-utf8/php-utf8.tar.gz
 
-// TODO Add tests
+        // TODO Add tests
 
         // Check further octets.
         while ($sequenceSize > 1) {
