@@ -18,6 +18,12 @@ use ReflectionMethod;
 use function add_filter;
 
 /**
+ * Implement hooking in method annotation.
+ *
+ * Format: @hook hook_name 10
+ *
+ * mindplay/annotations may be a better solution.
+ *
  * @see https://github.com/szepeviktor/debian-server-tools/blob/master/webserver/wordpress/WordPress-hooks.md
  */
 trait HookAnnotation
@@ -47,10 +53,6 @@ trait HookAnnotation
 
     /**
      * Read hook tag from docblock.
-     *
-     * mindplay/annotations may be a better solution.
-     *
-     * Format: @hook hook_name 10
      *
      * @return array{name: string, priority: int}|null
      */
