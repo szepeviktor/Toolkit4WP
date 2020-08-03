@@ -13,4 +13,4 @@ parameters:
         # PHPStan has problems with callables.
         -
             path: src/HookAnnotation.php
-            message: '#^Parameter \#2 \$function_to_add of function add_filter expects callable\(\): mixed, array\(\$this\(Toolkit4WP\\Tests\\HookAnnotation\), mixed\) given\.$#'
+            message: '#^Parameter \#2 \$function_to_add of function add_filter expects callable\(\): mixed, array\(\$this\(Toolkit4WP\\Tests\\HookAnnotation\), string\) given\.$#'
