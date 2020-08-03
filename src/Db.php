@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable NeutronStandard.Functions.TypeHint.NoReturnType
 
 /**
  * This is a gift for Phil.

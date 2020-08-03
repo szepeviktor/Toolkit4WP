@@ -82,6 +82,7 @@ class Is
      *
      * @param string $type Type of request.
      * @return bool
+     * phpcs:disable NeutronStandard.Functions.LongFunction.LongFunction
      */
     public static function request(string $type): bool
     {
@@ -131,5 +132,6 @@ class Is
                 \_doing_it_wrong(__METHOD__, \esc_html(\sprintf('Unknown request type: %s', $type)), '0.1.0');
                 return false;
         }
+        // phpcs:enable
     }
 }
