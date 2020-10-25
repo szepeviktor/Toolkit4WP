@@ -31,6 +31,8 @@ class Db
      * @see https://codex.wordpress.org/Class_Reference/wpdb#Class_Variables
      * @param string $name
      * @return mixed
+     *
+     * phpcs:disable NeutronStandard.Functions.TypeHint.NoReturnType
      */
     public function __get(string $name)
     {
@@ -38,6 +40,7 @@ class Db
 
         return $wpdb->$name;
     }
+    // phpcs:enable NeutronStandard.Functions.TypeHint.NoReturnType
 
     /**
      * Noop on set.
@@ -60,6 +63,8 @@ class Db
      * @param string $name
      * @param array<mixed> $arguments
      * @return mixed
+     *
+     * phpcs:disable NeutronStandard.Functions.TypeHint.NoReturnType
      */
     public function __call(string $name, array $arguments)
     {
@@ -73,4 +78,5 @@ class Db
         // phpcs:ignore NeutronStandard.Functions.DisallowCallUserFunc.CallUserFunc
         return \call_user_func_array($callback, $arguments);
     }
+    // phpcs:enable NeutronStandard.Functions.TypeHint.NoReturnType
 }

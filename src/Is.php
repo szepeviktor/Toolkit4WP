@@ -28,8 +28,12 @@ class Is
      */
     public static function live(): bool
     {
+        $env = \defined('WP_ENV')
+            ? \WP_ENV
+            : (\defined('WP_ENVIRONMENT_TYPE') ? \WP_ENVIRONMENT_TYPE : '');
+
         // Consider both production and staging environment as live.
-        return \defined('WP_ENV') && \in_array(\WP_ENV, ['production', 'staging'], true);
+        return \in_array($env, ['production', 'staging'], true);
     }
 
     /**
