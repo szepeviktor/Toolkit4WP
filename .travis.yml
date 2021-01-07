@@ -3,9 +3,11 @@
 if: "branch = master"
 
 language: "php"
+arch:
+  - "amd64"
+  - "arm64-graviton2"
 os:
   - "linux"
-  - "arm64-graviton2"
 dist: "bionic"
 
 php:
