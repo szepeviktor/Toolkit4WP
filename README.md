@@ -1,6 +1,6 @@
 # Toolkit for WordPress
 
-[![CircleCI](https://circleci.com/gh/szepeviktor/Toolkit4WP.svg?style=svg)](https://circleci.com/gh/szepeviktor/Toolkit4WP)
+[![Build Status](https://travis-ci.com/szepeviktor/Toolkit4WP.svg?branch=master)](https://travis-ci.com/github/szepeviktor/Toolkit4WP)
 [![Packagist](https://img.shields.io/packagist/v/szepeviktor/toolkit4wp.svg?color=239922&style=popout)](https://packagist.org/packages/szepeviktor/toolkit4wp)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-239922)](https://github.com/phpstan/phpstan)
 
