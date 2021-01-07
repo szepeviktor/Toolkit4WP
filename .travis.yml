@@ -1,0 +1,23 @@
+# TravisCI configuration for szepeviktor/toolkit4wp
+
+if: "branch = master"
+
+language: "php"
+os:
+  - "linux"
+  - "arm64-graviton2"
+dist: "bionic"
+
+php:
+  - "7.4"
+  - "7.1"
+
+before_install:
+  - "composer validate --no-interaction --strict"
+
+install:
+  - "composer update --no-interaction"
+
+script:
+  - "composer outdated --no-interaction --direct"
+  - "composer run-script --no-interaction test"
