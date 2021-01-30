@@ -125,9 +125,10 @@ function tagFromSkeleton(array $skeleton, string $htmlContent = ''): string
 /**
  * Create a select element.
  *
- * @param array<string, string> $options
+ * @param array<string, string> $attrs HTML attributes of the select.
+ * @param array<string, string> $options Option elements value=>item.
  */
-function tagSelect(string $name, array $options, string $currentValue = ''): string
+function tagSelect(array $attrs, array $options, string $currentValue = ''): string
 {
     $optionElements = \array_map(
         static function (string $value, string $item) use ($currentValue): string {
@@ -146,7 +147,7 @@ function tagSelect(string $name, array $options, string $currentValue = ''): str
 
     return tag(
         'select',
-        ['name' => $name],
+        $attrs,
         \implode('', $optionElements)
     );
 }
