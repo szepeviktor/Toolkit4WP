@@ -61,7 +61,7 @@ trait HookAnnotation
         $matches = [];
         if (
             \preg_match(
-                '/^\s+\*\s+@hook\s+([\w\/-]+)(?:\s+(\d+))?\s*$/m',
+                '/^\s+\*\s+@hook\s+([\w\/_=-]+)(?:\s+(\d+))?\s*$/m',
                 $docComment,
                 $matches
             ) !== 1
@@ -69,6 +69,9 @@ trait HookAnnotation
             return null;
         }
 
-        return ['name' => $matches[1], 'priority' => \intval($matches[2] ?? $defaultPriority)];
+        return [
+            'name' => $matches[1],
+            'priority' => \intval($matches[2] ?? $defaultPriority),
+        ];
     }
 }
