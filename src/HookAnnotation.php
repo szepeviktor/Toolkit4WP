@@ -21,6 +21,8 @@ use function add_filter;
  * Implement hooking in method annotation.
  *
  * Format: @hook hook_name 10
+ *         @hook hook_name first
+ *         @hook hook_name last
  *
  * mindplay/annotations may be a better solution.
  *
@@ -61,7 +63,7 @@ trait HookAnnotation
         $matches = [];
         if (
             \preg_match(
-                '/^\s+\*\s+@hook\s+([\w\/_=-]+)(?:\s+(\d+))?\s*$/m',
+                '/^\s+\*\s+@hook\s+([\w\/_=-]+)(?:\s+(\d+|first|last))?\s*$/m',
                 $docComment,
                 $matches
             ) !== 1
@@ -69,9 +71,28 @@ trait HookAnnotation
             return null;
         }
 
+        if (! isset($matches[2])) {
+            return [
+                'name' => $matches[1],
+                'priority' => $defaultPriority,
+            ];
+        }
+
+        switch ($matches[2]) {
+            case 'first':
+                $priority = PHP_INT_MIN;
+                break;
+            case 'last':
+                $priority = PHP_INT_MAX;
+                break;
+            default:
+                $priority = \intval($matches[2]);
+                break;
+        }
+
         return [
             'name' => $matches[1],
-            'priority' => \intval($matches[2] ?? $defaultPriority),
+            'priority' => $priority,
         ];
     }
 }
