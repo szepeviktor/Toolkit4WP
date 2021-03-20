@@ -20,9 +20,9 @@ use function add_filter;
 /**
  * Implement hooking in method annotation.
  *
- * Format: @hook hook_name 10
- *         @hook hook_name first
- *         @hook hook_name last
+ * Format: @hook tag 10
+ *         @hook tag first
+ *         @hook tag last
  *
  * mindplay/annotations may be a better solution.
  *
@@ -45,7 +45,7 @@ trait HookAnnotation
             }
 
             add_filter(
-                $hookDetails['name'],
+                $hookDetails['tag'],
                 [$this, $method->name],
                 $hookDetails['priority'],
                 $method->getNumberOfParameters()
@@ -56,13 +56,14 @@ trait HookAnnotation
     /**
      * Read hook tag from docblock.
      *
-     * @return array{name: string, priority: int}|null
+     * @return array{tag: string, priority: int}|null
      */
     protected function getMetadata(string $docComment, int $defaultPriority): ?array
     {
         $matches = [];
         if (
             \preg_match(
+                //         @hook   (   tag    )      (   priority   )
                 '/^\s+\*\s+@hook\s+([\w\/_=-]+)(?:\s+(\d+|first|last))?\s*$/m',
                 $docComment,
                 $matches
@@ -73,7 +74,7 @@ trait HookAnnotation
 
         if (! isset($matches[2])) {
             return [
-                'name' => $matches[1],
+                'tag' => $matches[1],
                 'priority' => $defaultPriority,
             ];
         }
@@ -91,7 +92,7 @@ trait HookAnnotation
         }
 
         return [
-            'name' => $matches[1],
+            'tag' => $matches[1],
             'priority' => $priority,
         ];
     }
