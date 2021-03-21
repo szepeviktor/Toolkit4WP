@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable NeutronStandard.Functions.DisallowCallUserFunc.CallUserFunc,ImportDetection.Imports.RequireImports.Symbol
 
 /**
  * Hook proxy for lazy loading.
@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Toolkit4WP;
 
 use Closure;
+use ReflectionClass;
+use ReflectionMethod;
 
 use function _wp_filter_build_unique_id;
 use function add_filter;
@@ -23,6 +25,8 @@ use function remove_filter;
  */
 trait HookProxy
 {
+    use HookAnnotation;
+
     /** @var array<string, \Closure(mixed ...$args): mixed> */
     protected array $callablesAdded;
 
@@ -64,18 +68,41 @@ trait HookProxy
     ): void {
         add_filter(
             $actionTag,
-            $this->generateClosureByInjector($callable, $injector),
+            $this->generateClosureWithInjector($callable, $injector),
             $priority,
             $argumentCount
         );
     }
 
+    /**
+     * This is not really lazy hooking as class must be loaded to use reflections.
+     *
+     * @param class-string $className
+     */
     protected function lazyHookAllMethods(
         string $className,
+        int $defaultPriority = 10,
         ?callable $injector = null
     ): void {
-        // $injector($callable[0]); + ReflectionClass
-        // thus call DocHook
+        $classReflection = new ReflectionClass($className);
+        // Look for hook tag in all public methods.
+        foreach ($classReflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            // Do not hook constructor.
+            if ($method->isConstructor()) {
+                continue;
+            }
+            $hookDetails = $this->getMetadata((string)$method->getDocComment(), $defaultPriority);
+            if ($hookDetails === null) {
+                continue;
+            }
+
+            add_filter(
+                $hookDetails['tag'],
+                $this->generateClosureWithInjector([$className, $method->name], $injector),
+                $hookDetails['priority'],
+                $method->getNumberOfParameters()
+            );
+        }
     }
 
     protected function unhook(
@@ -94,6 +121,8 @@ trait HookProxy
         );
         unset($this->callablesAdded[$id]);
     }
+
+    // phpcs:disable NeutronStandard.Functions.TypeHint.NoReturnType
 
     protected function generateClosure(callable $callable): Closure
     {
@@ -117,11 +146,12 @@ trait HookProxy
         return $this->callablesAdded[$id];
     }
 
-    protected function generateClosureByInjector(callable $callable, ?callable $injector): Closure
+    protected function generateClosureWithInjector(callable $callable, ?callable $injector): Closure
     {
         if (! is_array($callable)) {
             throw new \InvalidArgumentException('Callable is not an array: ' . var_export($callable, true));
         }
+
         $id = _wp_filter_build_unique_id('', $callable, 0);
         $this->callablesAdded[$id] = $injector === null
             ? static function (...$args) use ($callable) {
@@ -138,4 +168,3 @@ trait HookProxy
 }
 // TODO Measurements: w/o OPcache, OPcache with file read, OPcache without file read
 // TODO Add tests, remove_action, usage as filter with returned value
-// '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\): mixed, array\(mixed, mixed\) given\.$#'
