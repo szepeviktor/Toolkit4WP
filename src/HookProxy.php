@@ -28,7 +28,7 @@ trait HookProxy
     use HookAnnotation;
 
     /** @var array<string, \Closure(mixed ...$args): mixed> */
-    protected array $callablesAdded;
+    protected $callablesAdded;
 
     protected function lazyHookFunction(
         string $actionTag,
