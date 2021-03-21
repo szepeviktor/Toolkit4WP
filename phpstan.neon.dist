@@ -14,14 +14,18 @@ parameters:
         # PHPStan has problems with callables.
         -
             message: '#^Parameter \#2 \$function_to_add of function add_filter expects callable\(\): mixed, array\(\$this\(Toolkit4WP\\Tests\\HookAnnotation\), string\) given\.$#'
-            count: 2
+            count: 1
+            path: src/HookAnnotation.php
+        -
+            message: '#^Parameter \#2 \$function_to_add of function add_filter expects callable\(\): mixed, array\(\$this\(Toolkit4WP\\Tests\\HookProxy\), string\) given\.$#'
+            count: 1
             path: src/HookAnnotation.php
         -
             message: '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\): mixed, array\(mixed, mixed\) given\.$#'
             count: 1
             path: src/HookProxy.php
         -
-            message: '#^Parameter \#1 \$callable of method Toolkit4WP\\Tests\\HookAnnotation::generateClosureWithInjector\(\) expects callable\(\): mixed, array\(class-string, string\) given\.#'
+            message: '#^Parameter \#1 \$callable of method Toolkit4WP\\Tests\\HookProxy::generateClosureWithInjector\(\) expects callable\(\): mixed, array\(class-string, string\) given\.#'
             count: 1
             path: src/HookProxy.php
         # getMethod('init') guarantees init method exists

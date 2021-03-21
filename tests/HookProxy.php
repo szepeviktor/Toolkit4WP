@@ -6,7 +6,7 @@ namespace Toolkit4WP\Tests;
 
 use Toolkit4WP\HookProxy as Hook;
 
-class HookAnnotation
+class HookProxy
 {
     use Hook;
 
