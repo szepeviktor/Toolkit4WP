@@ -98,7 +98,7 @@ trait HookProxy
     protected function generateClosure(callable $callable): Closure
     {
         $id = _wp_filter_build_unique_id('', $callable, 0);
-        $this->callablesAdded[$id] = static function (...$args) {
+        $this->callablesAdded[$id] = static function (...$args) use ($callable) {
             return call_user_func_array($callable, $args);
         };
 
@@ -108,7 +108,7 @@ trait HookProxy
     protected function generateClosureWithFileLoad(callable $callable, string $filePath): Closure
     {
         $id = _wp_filter_build_unique_id('', $callable, 0);
-        $this->callablesAdded[$id] = static function (...$args) {
+        $this->callablesAdded[$id] = static function (...$args) use ($filePath, $callable) {
             require_once $filePath;
 
             return call_user_func_array($callable, $args);
@@ -119,12 +119,15 @@ trait HookProxy
 
     protected function generateClosureByInjector(callable $callable, ?callable $injector): Closure
     {
+        if (! is_array($callable)) {
+            throw new \InvalidArgumentException('Callable is not an array: ' . var_export($callable, true));
+        }
         $id = _wp_filter_build_unique_id('', $callable, 0);
         $this->callablesAdded[$id] = $injector === null
-            ? static function (...$args) {
+            ? static function (...$args) use ($callable) {
                 return call_user_func_array($callable, $args);
             }
-            : static function (...$args) {
+            : static function (...$args) use ($injector, $callable) {
                 $instance = call_user_func($injector, $callable[0]);
 
                 return call_user_func_array([$instance, $callable[1]], $args);
@@ -135,3 +138,4 @@ trait HookProxy
 }
 // TODO Measurements: w/o OPcache, OPcache with file read, OPcache without file read
 // TODO Add tests, remove_action, usage as filter with returned value
+// '#^Parameter \#1 \$function of function call_user_func_array expects callable\(\): mixed, array\(mixed, mixed\) given\.$#'
