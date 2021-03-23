@@ -110,10 +110,11 @@ trait HookProxy
         callable $callable,
         int $priority
     ): void {
-        $id = _wp_filter_build_unique_id('', $callable, 0);
+        $id = $this->buildUniqueId($callable);
         if (! array_key_exists($id, $this->callablesAdded)) {
             return;
         }
+
         remove_filter(
             $actionTag,
             $this->callablesAdded[$id],
@@ -126,7 +127,7 @@ trait HookProxy
 
     protected function generateClosure(callable $callable): Closure
     {
-        $id = _wp_filter_build_unique_id('', $callable, 0);
+        $id = $this->buildUniqueId($callable);
         $this->callablesAdded[$id] = static function (...$args) use ($callable) {
             return call_user_func_array($callable, $args);
         };
@@ -136,7 +137,7 @@ trait HookProxy
 
     protected function generateClosureWithFileLoad(callable $callable, string $filePath): Closure
     {
-        $id = _wp_filter_build_unique_id('', $callable, 0);
+        $id = $this->buildUniqueId($callable);
         $this->callablesAdded[$id] = static function (...$args) use ($filePath, $callable) {
             require_once $filePath;
 
@@ -152,7 +153,7 @@ trait HookProxy
             throw new \InvalidArgumentException('Callable is not an array: ' . var_export($callable, true));
         }
 
-        $id = _wp_filter_build_unique_id('', $callable, 0);
+        $id = $this->buildUniqueId($callable);
         $this->callablesAdded[$id] = $injector === null
             ? static function (...$args) use ($callable) {
                 return call_user_func_array($callable, $args);
@@ -164,6 +165,11 @@ trait HookProxy
             };
 
         return $this->callablesAdded[$id];
+    }
+
+    protected function buildUniqueId(callable $callable): string
+    {
+        return _wp_filter_build_unique_id('', $callable, 0);
     }
 }
 // TODO Measurements: w/o OPcache, OPcache with file read, OPcache without file read
