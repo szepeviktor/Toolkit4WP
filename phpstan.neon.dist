@@ -25,7 +25,7 @@ parameters:
             count: 1
             path: src/HookProxy.php
         -
-            message: '#^Parameter \#1 \$callable of method Toolkit4WP\\Tests\\HookProxy::generateClosureWithInjector\(\) expects callable\(\): mixed, array\(class-string, string\) given\.#'
+            message: '#^Parameter \#2 \$callable of method Toolkit4WP\\Tests\\HookProxy::generateClosureWithInjector\(\) expects callable\(\): mixed, array\(class-string, string\) given\.#'
             count: 1
             path: src/HookProxy.php
         # getMethod('init') guarantees init method exists

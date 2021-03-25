@@ -39,7 +39,7 @@ trait HookProxy
     ): void {
         add_filter(
             $actionTag,
-            $this->generateClosureWithFileLoad($callable, $filePath),
+            $this->generateClosureWithFileLoad($actionTag, $callable, $filePath),
             $priority,
             $argumentCount
         );
@@ -53,7 +53,7 @@ trait HookProxy
     ): void {
         add_filter(
             $actionTag,
-            $this->generateClosure($callable),
+            $this->generateClosure($actionTag, $callable),
             $priority,
             $argumentCount
         );
@@ -68,7 +68,7 @@ trait HookProxy
     ): void {
         add_filter(
             $actionTag,
-            $this->generateClosureWithInjector($callable, $injector),
+            $this->generateClosureWithInjector($actionTag, $callable, $injector),
             $priority,
             $argumentCount
         );
@@ -98,7 +98,7 @@ trait HookProxy
 
             add_filter(
                 $hookDetails['tag'],
-                $this->generateClosureWithInjector([$className, $method->name], $injector),
+                $this->generateClosureWithInjector($hookDetails['tag'], [$className, $method->name], $injector),
                 $hookDetails['priority'],
                 $method->getNumberOfParameters()
             );
@@ -110,7 +110,7 @@ trait HookProxy
         callable $callable,
         int $priority
     ): void {
-        $id = $this->buildUniqueId($callable);
+        $id = $this->buildUniqueId($actionTag, $callable);
         if (! array_key_exists($id, $this->callablesAdded)) {
             return;
         }
@@ -125,9 +125,9 @@ trait HookProxy
 
     // phpcs:disable NeutronStandard.Functions.TypeHint.NoReturnType
 
-    protected function generateClosure(callable $callable): Closure
+    protected function generateClosure(string $actionTag, callable $callable): Closure
     {
-        $id = $this->buildUniqueId($callable);
+        $id = $this->buildUniqueId($actionTag, $callable);
         $this->callablesAdded[$id] = static function (...$args) use ($callable) {
             return call_user_func_array($callable, $args);
         };
@@ -135,9 +135,9 @@ trait HookProxy
         return $this->callablesAdded[$id];
     }
 
-    protected function generateClosureWithFileLoad(callable $callable, string $filePath): Closure
+    protected function generateClosureWithFileLoad(string $actionTag, callable $callable, string $filePath): Closure
     {
-        $id = $this->buildUniqueId($callable);
+        $id = $this->buildUniqueId($actionTag, $callable);
         $this->callablesAdded[$id] = static function (...$args) use ($filePath, $callable) {
             require_once $filePath;
 
@@ -147,13 +147,13 @@ trait HookProxy
         return $this->callablesAdded[$id];
     }
 
-    protected function generateClosureWithInjector(callable $callable, ?callable $injector): Closure
+    protected function generateClosureWithInjector(string $actionTag, callable $callable, ?callable $injector): Closure
     {
         if (! is_array($callable)) {
             throw new \InvalidArgumentException('Callable is not an array: ' . var_export($callable, true));
         }
 
-        $id = $this->buildUniqueId($callable);
+        $id = $this->buildUniqueId($actionTag, $callable);
         $this->callablesAdded[$id] = $injector === null
             ? static function (...$args) use ($callable) {
                 return call_user_func_array($callable, $args);
@@ -167,10 +167,11 @@ trait HookProxy
         return $this->callablesAdded[$id];
     }
 
-    protected function buildUniqueId(callable $callable): string
+    protected function buildUniqueId(string $actionTag, callable $callable): string
     {
-        return _wp_filter_build_unique_id('', $callable, 0);
+        return sprintf('%s/%s', $actionTag, _wp_filter_build_unique_id('', $callable, 0));
     }
 }
 // TODO Measurements: w/o OPcache, OPcache with file read, OPcache without file read
-// TODO Add tests, remove_action, usage as filter with returned value
+// TODO Add tests, remove_action, usage as filter with returned value,
+//      one callable hooked to many action tags then removed
