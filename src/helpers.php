@@ -27,15 +27,18 @@ use Traversable;
  */
 function tag(string $name = 'div', array $attrs = [], $content = ''): string
 {
-    $voids = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img',
-        'input', 'link', 'meta', 'param', 'source', 'track', 'wbr', ];
+    $voids = [
+        'area', 'base', 'br', 'col', 'embed', 'hr', 'img',
+        'input', 'link', 'meta', 'param', 'source', 'track', 'wbr',
+    ];
 
-    // Void elements.
     $name = \sanitize_key($name);
-    $isVoid = \in_array($name, $voids, true);
     if ($content instanceof Traversable) {
         $content = \implode(\iterator_to_array($content));
     }
+
+    // Void elements.
+    $isVoid = \in_array($name, $voids, true);
     if ($isVoid && $content !== '') {
         throw new \Exception('Void HTML element with content.');
     }
@@ -50,11 +53,14 @@ function tag(string $name = 'div', array $attrs = [], $content = ''): string
             $attrString .= \sprintf(' %s', $attrName);
             continue;
         }
-        if (\in_array($attrValue, ['href', 'src'], true)) {
-            $attrString .= \sprintf(' %s="%s"', $attrName, esc_url($attrValue));
-            continue;
-        }
-        $attrString .= \sprintf(' %s="%s"', $attrName, esc_attr($attrValue));
+
+        $attrString .= \sprintf(
+            ' %s="%s"',
+            $attrName,
+            \in_array($attrValue, ['href', 'src'], true)
+                ? esc_url($attrValue)
+                : esc_attr($attrValue)
+        );
     }
 
     // Element.
