@@ -57,7 +57,7 @@ function tag(string $name = 'div', array $attrs = [], $content = ''): string
         $attrString .= \sprintf(
             ' %s="%s"',
             $attrName,
-            \in_array($attrValue, ['href', 'src'], true)
+            \in_array($attrName, ['href', 'src'], true)
                 ? esc_url($attrValue)
                 : esc_attr($attrValue)
         );
