@@ -11,14 +11,17 @@
         "php": ">=7.1"
     },
     "require-dev": {
-        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6",
+        "szepeviktor/phpcs-psr-12-neutron-hybrid-ruleset": "^0.6.1",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
-        "szepeviktor/phpstan-wordpress": "^0.7"
+        "szepeviktor/phpstan-wordpress": "^1.0.2"
     },
     "suggest": {
     },
     "config": {
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     },
     "autoload": {
         "psr-4": {
