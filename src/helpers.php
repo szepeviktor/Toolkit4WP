@@ -14,6 +14,11 @@ namespace Toolkit4WP;
 
 use Traversable;
 
+use function esc_attr;
+use function esc_html;
+use function esc_url;
+use function sanitize_key;
+
 /**
  * Create an HTML element with pure PHP.
  *
@@ -32,7 +37,7 @@ function tag(string $name = 'div', array $attrs = [], $content = ''): string
         'input', 'link', 'meta', 'param', 'source', 'track', 'wbr',
     ];
 
-    $name = \sanitize_key($name);
+    $name = sanitize_key($name);
     if ($content instanceof Traversable) {
         $content = \implode(\iterator_to_array($content));
     }
