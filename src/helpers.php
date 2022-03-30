@@ -20,6 +20,37 @@ use function esc_url;
 use function sanitize_key;
 
 /**
+ * Create an HTML attribute string from an array.
+ *
+ * @param array<string, string|null> $attrs HTML attributes.
+ * @return string
+ */
+function tagAttrString(array $attrs = []): string
+{
+    // Attributes.
+    $attrString = '';
+    foreach ($attrs as $attrName => $attrValue) {
+        $attrName = \strtolower($attrName);
+        $attrName = \preg_replace('/[^a-z0-9-]/', '', $attrName);
+        // Boolean Attributes.
+        if ($attrValue === null) {
+            $attrString .= \sprintf(' %s', $attrName);
+            continue;
+        }
+
+        $attrString .= \sprintf(
+            ' %s="%s"',
+            $attrName,
+            \in_array($attrName, ['href', 'src'], true)
+                ? esc_url($attrValue)
+                : esc_attr($attrValue)
+        );
+    }
+
+    return $attrString;
+}
+
+/**
  * Create an HTML element with pure PHP.
  *
  * @see https://www.w3.org/TR/html/syntax.html#void-elements
@@ -48,25 +79,7 @@ function tag(string $name = 'div', array $attrs = [], $content = ''): string
         throw new \Exception('Void HTML element with content.');
     }
 
-    // Attributes.
-    $attrString = '';
-    foreach ($attrs as $attrName => $attrValue) {
-        $attrName = \strtolower($attrName);
-        $attrName = \preg_replace('/[^a-z0-9-]/', '', $attrName);
-        // Boolean Attributes.
-        if ($attrValue === null) {
-            $attrString .= \sprintf(' %s', $attrName);
-            continue;
-        }
-
-        $attrString .= \sprintf(
-            ' %s="%s"',
-            $attrName,
-            \in_array($attrName, ['href', 'src'], true)
-                ? esc_url($attrValue)
-                : esc_attr($attrValue)
-        );
-    }
+    $attrString = tagAttrString($attrs);
 
     // Element.
     if ($isVoid) {
