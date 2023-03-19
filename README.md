@@ -1,3 +1,7 @@
+:warning: this repository is being moved to https://github.com/szepeviktor/SentencePress
+
+list of everything for WordPress starts here: https://github.com/szepeviktor/wordpress-website-lifecycle
+
 # Toolkit for WordPress
 
 [![Build Status](https://travis-ci.com/szepeviktor/Toolkit4WP.svg?branch=master)](https://travis-ci.com/github/szepeviktor/Toolkit4WP)
